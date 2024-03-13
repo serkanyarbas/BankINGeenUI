@@ -25,7 +25,7 @@ class Home extends LitElement {
       text-align: center !important;
     }
 
-    .center {
+    .text-center .form-signin {
       width: 100%;
       max-width: 330px;
       padding: 15px;
