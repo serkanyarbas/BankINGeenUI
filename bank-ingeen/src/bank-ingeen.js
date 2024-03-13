@@ -5,13 +5,12 @@ import './components/dashboard/bank-dashboard.js';
 import './components/admin/scenario.js';
 
 class BankIngeen extends LitElement {
-  static properties = {
-    isLoggedIn: { type: Boolean, reflect: true },
-  };
-
   constructor() {
     super();
-    this.isLoggedIn = true;
+    this.setAuthorized(false);
+    window.addEventListener('login-event', () => {
+      this.requestUpdate();
+    });
   }
 
   static styles = css`
@@ -171,19 +170,34 @@ class BankIngeen extends LitElement {
     }
   `;
 
+  getAuthorized() {
+    return /true/i.test(sessionStorage.getItem('authorized'));
+  }
+
+  setAuthorized(val) {
+    sessionStorage.setItem('authorized', val);
+  }
+
   firstUpdated() {
-    if (this.isLoggedIn) {
-      const router = new Router(this.shadowRoot.querySelector('#outlet'));
-      router.setRoutes([
-        { path: '/dashboard', component: 'hack-dashboard' },
-        { path: '/scenario', component: 'hack-scenario' },
-      ]);
-    }
+    const outlet = this.shadowRoot.querySelector('#outlet');
+    const router = new Router(outlet);
+    router.setRoutes([
+      { path: '/', component: 'hack-dashboard' },
+      { path: '/dashboard', component: 'hack-dashboard' },
+      { path: '/scenario', component: 'hack-scenario' },
+      { path: '/login/:to?', component: 'hack-login' },
+      {
+        path: '/logout',
+        action: (context, commands) => {
+          this.setAuthorized(false);
+          return commands.redirect('/login');
+        },
+      },
+    ]);
   }
 
   renderHeader() {
-    if (!this.isLoggedIn) return '';
-
+    if (!this.getAuthorized()) return '';
     return html`
       <header
         class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow"
@@ -241,7 +255,7 @@ class BankIngeen extends LitElement {
   }
 
   renderSidebar() {
-    if (!this.isLoggedIn) return '';
+    if (!this.getAuthorized()) return '';
 
     return html`
       <nav
@@ -525,15 +539,15 @@ class BankIngeen extends LitElement {
   }
 
   renderOutlet() {
-    if (this.isLoggedIn) {
-      return html`
-        <main id="outlet" class="col-md-9 ms-sm-auto col-lg-10 px-md-4"></main>
-      `;
-    }
-    return html` <hack-login isLoggedIn="${this.isLoggedIn}"></hack-login> `;
+    return html` <main id="outlet"></main> `;
   }
 
   render() {
+    if (this.getAuthorized()) {
+      debugger;
+      const outlet = this.shadowRoot.querySelector('#outlet');
+      outlet.setAttribute('class', 'col-md-9 ms-sm-auto col-lg-10 px-md-4');
+    }
     return html`
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"

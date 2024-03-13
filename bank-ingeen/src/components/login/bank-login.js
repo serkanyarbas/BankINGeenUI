@@ -1,12 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import '@lion/ui/define/lion-input.js';
+import { Router } from '@vaadin/router';
 
 class Home extends LitElement {
-  // This will make sure the component does not have a shadow root
-  createRenderRoot() {
-    return this;
-  }
-
   static styles = css`
     :host {
       min-height: 100vh;
@@ -68,9 +64,19 @@ class Home extends LitElement {
     }
   `;
 
-  static properties = {
-    isLoggedIn: { type: Boolean, attribute: true, reflect: true },
-  };
+  static properties = {};
+
+  submit() {
+    window.sessionStorage.setItem('authorized', true);
+    this.dispatchEvent(
+      new CustomEvent('login-event', {
+        bubbles: true,
+        composed: true,
+        detail: true,
+      })
+    );
+    Router.go('/dashboard');
+  }
 
   render() {
     return html`
@@ -119,9 +125,7 @@ class Home extends LitElement {
 
             <lion-button
               class="w-100 btn btn-lg btn-primary"
-              @click=${() => {
-                this.isLoggedIn = true;
-              }}
+              @click=${this.submit}
               >Sign in</lion-button
             >
             <p class="mt-5 mb-3 text-muted">© 2017–2021</p>

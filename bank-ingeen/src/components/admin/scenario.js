@@ -5,8 +5,9 @@ import '@lion/ui/define/lion-input.js';
 import '@lion/ui/define/lion-fieldset.js';
 import '@lion/ui/define/lion-checkbox.js';
 import '@lion/ui/define/lion-listbox.js';
+import { SessionMixin } from '../../mixin/sessionMixin.js';
 
-class Scenario extends LitElement {
+class Scenario extends SessionMixin(LitElement) {
   // This will make sure the component does not have a shadow root
   createRenderRoot() {
     return this;

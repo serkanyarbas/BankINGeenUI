@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
+import { SessionMixin } from '../../mixin/sessionMixin.js';
 
-class Dashboard extends LitElement {
+class Dashboard extends SessionMixin(LitElement) {
   // This will make sure the component does not have a shadow root
   createRenderRoot() {
     return this;
