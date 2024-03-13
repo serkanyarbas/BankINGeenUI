@@ -58,14 +58,6 @@ class Dashboard extends LitElement {
         </div>
       </div>
 
-      <canvas
-        class="my-4 w-100 chartjs-render-monitor"
-        id="myChart"
-        width="1580"
-        height="666"
-        style="display: block; height: 333px; width: 790px;"
-      ></canvas>
-
       <h2>Section title</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
