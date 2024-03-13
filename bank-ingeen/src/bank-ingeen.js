@@ -6,13 +6,12 @@ import './components/admin/scenario.js';
 
 class BankIngeen extends LitElement {
   static properties = {
-    header: { type: String },
-    isLoggedIn: { type: Boolean },
+    isLoggedIn: { type: Boolean, reflect: true },
   };
 
   constructor() {
     super();
-    this.isLoggedIn = false;
+    this.isLoggedIn = true;
   }
 
   static styles = css`
@@ -173,12 +172,13 @@ class BankIngeen extends LitElement {
   `;
 
   firstUpdated() {
-    const router = new Router(this.shadowRoot.querySelector('#outlet'));
-    router.setRoutes([
-      { path: '/dashboard', component: 'hack-dashboard' },
-      { path: '/login', component: 'hack-login' },
-      { path: '/scenario', component: 'hack-scenario' },
-    ]);
+    if (this.isLoggedIn) {
+      const router = new Router(this.shadowRoot.querySelector('#outlet'));
+      router.setRoutes([
+        { path: '/dashboard', component: 'hack-dashboard' },
+        { path: '/scenario', component: 'hack-scenario' },
+      ]);
+    }
   }
 
   renderHeader() {
@@ -507,7 +507,7 @@ class BankIngeen extends LitElement {
         <main id="outlet" class="col-md-9 ms-sm-auto col-lg-10 px-md-4"></main>
       `;
     }
-    return html` <hack-login .isLoggedIn="${this.isLoggedIn}"></hack-login>`;
+    return html` <hack-login isLoggedIn="${this.isLoggedIn}"></hack-login> `;
   }
 
   render() {

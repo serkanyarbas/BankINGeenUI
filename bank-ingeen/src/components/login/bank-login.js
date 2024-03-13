@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import '@lion/ui/define/lion-input.js';
 
 class Home extends LitElement {
   // This will make sure the component does not have a shadow root
@@ -67,6 +68,10 @@ class Home extends LitElement {
     }
   `;
 
+  static properties = {
+    isLoggedIn: { type: Boolean, attribute: true, reflect: true },
+  };
+
   render() {
     return html`
       <link
@@ -111,9 +116,14 @@ class Home extends LitElement {
                 <input type="checkbox" value="remember-me" /> Remember me
               </label>
             </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit">
-              Sign in
-            </button>
+
+            <lion-button
+              class="w-100 btn btn-lg btn-primary"
+              @click=${() => {
+                this.isLoggedIn = true;
+              }}
+              >Sign in</lion-button
+            >
             <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
           </form>
         </div>
