@@ -18,6 +18,8 @@
     "start": "web-dev-server"
   },
   "dependencies": {
+    "@lion/ajax": "^2.0.1",
+    "@lion/ui": "^0.5.5",
     "@vaadin/router": "^1.7.5",
     "lit": "^2.0.2"
   },
