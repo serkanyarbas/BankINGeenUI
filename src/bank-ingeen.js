@@ -190,6 +190,7 @@ class BankIngeen extends LitElement {
         path: '/logout',
         action: (context, commands) => {
           this.setAuthorized(false);
+          this.requestUpdate();
           return commands.redirect('/login');
         },
       },
@@ -247,7 +248,7 @@ class BankIngeen extends LitElement {
         </div>
         <div class="navbar-nav">
           <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="/login">Sign out</a>
+            <a class="nav-link px-3" href="/logout">Sign out</a>
           </div>
         </div>
       </header>
@@ -543,10 +544,11 @@ class BankIngeen extends LitElement {
   }
 
   render() {
+    const outlet = this.shadowRoot.querySelector('#outlet');
     if (this.getAuthorized()) {
-      debugger;
-      const outlet = this.shadowRoot.querySelector('#outlet');
       outlet.setAttribute('class', 'col-md-9 ms-sm-auto col-lg-10 px-md-4');
+    } else {
+      outlet?.removeAttribute('class');
     }
     return html`
       <link
