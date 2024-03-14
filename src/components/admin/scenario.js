@@ -57,8 +57,19 @@ class Scenario extends SessionMixin(LitElement) {
         return response.json();
       })
       .then(data => {
-        debugger;
-        console.log(data);
+        Toastify({
+          text: 'Scenario Created',
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: 'top', // `top` or `bottom`
+          position: 'center', // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: 'linear-gradient(to right, #00b09b, #96c93d)',
+          },
+          onClick: function () {}, // Callback after click
+        }).showToast();
       });
   }
 
@@ -97,8 +108,6 @@ class Scenario extends SessionMixin(LitElement) {
           name="combo"
           label="Table Name"
           @model-value-changed="${e => {
-            debugger;
-
             fetch('http://localhost:8080/admin/table/column/list/v1', {
               method: 'POST', // *GET, POST, PUT, DELETE, etc.
               mode: 'cors', // no-cors, *cors, same-origin

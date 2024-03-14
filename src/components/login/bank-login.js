@@ -55,15 +55,61 @@ class Home extends LitElement {
   static properties = {};
 
   submit() {
-    window.sessionStorage.setItem('authorized', true);
-    this.dispatchEvent(
-      new CustomEvent('login-event', {
-        bubbles: true,
-        composed: true,
-        detail: true,
+    const data = {
+      userCode: this.shadowRoot.querySelector('#userCode').value,
+      password: this.shadowRoot.querySelector('#pwd').value,
+    };
+
+    fetch('http://localhost:8080/login/v1', {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error, status = ${response.status}`);
+        }
+        return response.json();
       })
-    );
-    Router.go('/dashboard');
+      .then(data => {
+        Toastify({
+          text: 'Succesfully Logged In!',
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: 'top', // `top` or `bottom`
+          position: 'center', // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: 'linear-gradient(to right, #00b09b, #96c93d)',
+          },
+          onClick: function () {}, // Callback after click
+        }).showToast();
+
+        //if(data?.responseHeader?.success){
+        window.sessionStorage.setItem('authorized', true);
+        window.sessionStorage.setItem('role', data.roleId);
+        this.dispatchEvent(
+          new CustomEvent('login-event', {
+            bubbles: true,
+            composed: true,
+            detail: true,
+          })
+        );
+        Router.go('/dashboard');
+        /*}else {
+          window.sessionStorage.setItem('authorized', false);
+        }*/
+        console.log(data);
+      });
   }
 
   render() {
@@ -76,48 +122,34 @@ class Home extends LitElement {
       />
       <div class="text-center">
         <div class="form-signing">
-          <form>
-            <img
-              class="mb-4"
-              src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg"
-              alt=""
-              width="72"
-              height="57"
-            />
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+          <img
+            class="mb-4"
+            src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg"
+            alt=""
+            width="72"
+            height="57"
+          />
+          <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-            <div class="form-floating">
-              <input
-                type="email"
-                class="form-control"
-                id="floatingInput"
-                placeholder="name@example.com"
-              />
-              <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating">
-              <input
-                type="password"
-                class="form-control"
-                id="floatingPassword"
-                placeholder="Password"
-              />
-              <label for="floatingPassword">Password</label>
-            </div>
+          <div class="form-floating">
+            <lion-input id="userCode" label="Kullanıcı Adı"></lion-input>
+          </div>
+          <div class="form-floating">
+            <lion-input id="pwd" type="password" label="Password"></lion-input>
+          </div>
 
-            <div class="checkbox mb-3">
-              <label>
-                <input type="checkbox" value="remember-me" /> Remember me
-              </label>
-            </div>
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me" /> Remember me
+            </label>
+          </div>
 
-            <lion-button
-              class="w-100 btn btn-lg btn-primary"
-              @click=${this.submit}
-              >Sign in</lion-button
-            >
-            <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
-          </form>
+          <lion-button
+            class="w-100 btn btn-lg btn-primary"
+            @click=${this.submit}
+            >Sign in</lion-button
+          >
+          <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
         </div>
       </div>
     `;
