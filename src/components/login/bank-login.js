@@ -80,35 +80,47 @@ class Home extends LitElement {
         return response.json();
       })
       .then(data => {
-        Toastify({
-          text: 'Succesfully Logged In!',
-          duration: 3000,
-          newWindow: true,
-          close: true,
-          gravity: 'top', // `top` or `bottom`
-          position: 'center', // `left`, `center` or `right`
-          stopOnFocus: true, // Prevents dismissing of toast on hover
-          style: {
-            background: 'linear-gradient(to right, #00b09b, #96c93d)',
-          },
-          onClick: function () {}, // Callback after click
-        }).showToast();
+        if (data?.responseHeader?.success) {
+          Toastify({
+            text: 'Succesfully Logged In!',
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: 'top', // `top` or `bottom`
+            position: 'center', // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: 'linear-gradient(to right, #00b09b, #96c93d)',
+            },
+            onClick: function () {}, // Callback after click
+          }).showToast();
 
-        //if(data?.responseHeader?.success){
-        window.sessionStorage.setItem('authorized', true);
-        window.sessionStorage.setItem('role', data.roleId);
-        this.dispatchEvent(
-          new CustomEvent('login-event', {
-            bubbles: true,
-            composed: true,
-            detail: true,
-          })
-        );
-        Router.go('/dashboard');
-        /*}else {
+          window.sessionStorage.setItem('authorized', true);
+          window.sessionStorage.setItem('role', data.roleId);
+          this.dispatchEvent(
+            new CustomEvent('login-event', {
+              bubbles: true,
+              composed: true,
+              detail: true,
+            })
+          );
+          Router.go('/dashboard');
+        } else {
+          Toastify({
+            text: 'Wrong User or password!',
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: 'top', // `top` or `bottom`
+            position: 'center', // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: 'linear-gradient(to right, #7C0A02, #420D09)',
+            },
+            onClick: function () {}, // Callback after click
+          }).showToast();
           window.sessionStorage.setItem('authorized', false);
-        }*/
-        console.log(data);
+        }
       });
   }
 
