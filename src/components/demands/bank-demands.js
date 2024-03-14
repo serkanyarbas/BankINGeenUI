@@ -21,7 +21,6 @@ class Demands extends SessionMixin(LitElement) {
   }
 
   updateTableData(event, rowIndex, cellKey) {
-    debugger;
     var old = this.tableData.scenarioRecordList[
       rowIndex
     ].columnContentList.find(item => item.columnName == cellKey);
@@ -128,7 +127,7 @@ class Demands extends SessionMixin(LitElement) {
             `
         )}
       </lion-combobox>
-      
+
       <br />
 
       <div class="table-responsive">
