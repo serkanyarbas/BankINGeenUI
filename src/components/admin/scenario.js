@@ -18,7 +18,7 @@ class Scenario extends SessionMixin(LitElement) {
 
   static properties = {
     listboxData: { type: Array, reflect: true },
-    columnData: { type: Array },
+    columnData: { type: Array, reflect: true },
   };
 
   constructor() {
@@ -120,7 +120,7 @@ class Scenario extends SessionMixin(LitElement) {
               redirect: 'follow', // manual, *follow, error
               referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
               body: JSON.stringify({
-                tableName: 'ss_resource',
+                tableName: e.target.value,
               }), // body data type must match "Content-Type" header
             })
               .then(response => {
@@ -164,18 +164,39 @@ class Scenario extends SessionMixin(LitElement) {
             </thead>
             <tbody>
               ${this.columnData?.map(
-                entry =>
+                (entry, i) =>
                   html`
                     <tr>
                       <td>${entry.columnName}</td>
                       <td>
-                        <input type="checkbox" .checked=${entry.isPrimaryKey} />
+                        <input
+                          name="key${i}"
+                          type="checkbox"
+                          .checked=${entry.isPrimaryKey}
+                          @click=${() => {
+                            entry.isPrimaryKey = !entry.isPrimaryKey;
+                          }}
+                        />
                       </td>
                       <td>
-                        <input type="checkbox" .checked=${entry.isEditable} />
+                        <input
+                          name="edit${i}"
+                          type="checkbox"
+                          .checked=${entry.isEditable}
+                          @click=${() => {
+                            entry.isEditable = !entry.isEditable;
+                          }}
+                        />
                       </td>
                       <td>
-                        <input type="checkbox" .checked=${entry.isVisible} />
+                        <input
+                          name="visible${i}"
+                          type="checkbox"
+                          .checked=${entry.isVisible}
+                          @click=${() => {
+                            entry.isVisible = !entry.isVisible;
+                          }}
+                        />
                       </td>
                     </tr>
                   `
