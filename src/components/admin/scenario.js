@@ -107,7 +107,13 @@ class Scenario extends SessionMixin(LitElement) {
           id="tableSelection"
           name="combo"
           label="Table Name"
-          @model-value-changed="${e => {
+          @active-changed="${e => {
+            e.preventDefault();
+            if (this.tableName != e.target.value) {
+              this.tableName = e.target.value;
+            } else {
+              return;
+            }
             fetch('http://localhost:8080/admin/table/column/list/v1', {
               method: 'POST', // *GET, POST, PUT, DELETE, etc.
               mode: 'cors', // no-cors, *cors, same-origin
