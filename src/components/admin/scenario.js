@@ -37,7 +37,7 @@ class Scenario extends SessionMixin(LitElement) {
       checkerGroupId: this.querySelector('#approverRole').modelValue,
     };
 
-    fetch('http://localhost:8080/admin/table/list/v1', {
+    fetch('http://localhost:8080/admin/scenario/create/v1', {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
