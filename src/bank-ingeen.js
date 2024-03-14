@@ -3,6 +3,7 @@ import { Router } from '@vaadin/router';
 import './components/login/bank-login.js';
 import './components/dashboard/bank-dashboard.js';
 import './components/admin/scenario.js';
+import './components/demands/bank-demands.js';
 
 class BankIngeen extends LitElement {
   constructor() {
@@ -186,6 +187,7 @@ class BankIngeen extends LitElement {
       { path: '/dashboard', component: 'hack-dashboard' },
       { path: '/scenario', component: 'hack-scenario' },
       { path: '/login/:to?', component: 'hack-login' },
+      { path: '/demands', component: 'hack-demands' },
       {
         path: '/logout',
         action: (context, commands) => {
@@ -400,6 +402,27 @@ class BankIngeen extends LitElement {
                   <polyline points="2 12 12 17 22 12"></polyline>
                 </svg>
                 Integrations
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/demands">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-code"
+                  aria-hidden="true"
+                >
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                Demands
               </a>
             </li>
           </ul>
